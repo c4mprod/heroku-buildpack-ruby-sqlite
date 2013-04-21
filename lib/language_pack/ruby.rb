@@ -18,6 +18,7 @@ class LanguagePack::Ruby < LanguagePack::Base
   NODE_JS_BINARY_PATH = "node-#{NODE_VERSION}"
   JVM_BASE_URL        = "http://heroku-jdk.s3.amazonaws.com"
   JVM_VERSION         = "openjdk7-latest"
+  TAGLIB_URL          = "https://s3.amazonaws.com/menan/heroku-buildpack-ruby/taglib.tgz"
 
   # detects if this is a valid Ruby app
   # @return [Boolean] true if it's a Ruby app
@@ -361,6 +362,15 @@ ERROR
     FileUtils.mkdir_p dir
     Dir.chdir(dir) do |dir|
       run("curl #{VENDOR_URL}/#{LIBYAML_PATH}.tgz -s -o - | tar xzf -")
+    end
+  end
+
+  # install libyaml into the LP to be referenced for psych compilation
+  # @param [String] tmpdir to store the libyaml files
+  def install_taglib(dir)
+    FileUtils.mkdir_p dir
+    Dir.chdir(dir) do |dir|
+      run("curl #{TAGLIB_URL}.tgz -s -o - | tar xzf -")
     end
   end
 
