@@ -20,6 +20,8 @@ class LanguagePack::Ruby < LanguagePack::Base
   JVM_VERSION         = "openjdk7-latest"
   TAGLIB_VERSION      = "1.8"
   TAGLIB_PATH         = "taglib-#{TAGLIB_VERSION}"
+  
+  MY_VENDOR_URL       = "https://s3.amazonaws.com/menan/heroku-buildpack-ruby"
 
   # detects if this is a valid Ruby app
   # @return [Boolean] true if it's a Ruby app
@@ -366,12 +368,12 @@ ERROR
     end
   end
 
-  # install libyaml into the LP to be referenced for psych compilation
-  # @param [String] tmpdir to store the libyaml files
+  # install taglib into the LP to be referenced for psych compilation
+  # @param [String] tmpdir to store the taglib files
   def install_taglib(dir)
     FileUtils.mkdir_p dir
     Dir.chdir(dir) do |dir|
-      run("curl https://s3.amazonaws.com/menan/heroku-buildpack-ruby#{TAGLIB_PATH}.tgz -s -o - | tar xzf -")
+      run("curl #{MY_VENDOR_URL}/#{TAGLIB_PATH}.tgz -s -o - | tar xzf -")
     end
   end
 
