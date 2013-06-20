@@ -433,7 +433,7 @@ ERROR
         yaml_include   = File.expand_path("#{libyaml_dir}/include")
         yaml_lib       = File.expand_path("#{libyaml_dir}/lib")
         
-        salite_include   = File.expand_path("#{sqlite_dir}/include")
+        sqlite_include   = File.expand_path("#{sqlite_dir}/include")
         sqlite_lib       = File.expand_path("#{sqlite_dir}/lib")
         
         pwd            = run("pwd").chomp
