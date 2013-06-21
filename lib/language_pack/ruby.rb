@@ -435,6 +435,7 @@ ERROR
         
         sqlite_include   = File.expand_path("#{sqlite_dir}/include")
         sqlite_lib       = File.expand_path("#{sqlite_dir}/lib")
+
         
         pwd            = run("pwd").chomp
         bundler_path   = "#{pwd}/#{slug_vendor_base}/gems/#{BUNDLER_GEM_PATH}/lib"
@@ -443,7 +444,11 @@ ERROR
         
         env_vars       = "env BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:#{sqlite_include}:$CPATH CPPATH=#{yaml_include}:#{sqlite_include}:$CPPATH LIBRARY_PATH=#{yaml_lib}:#{sqlite_lib}:$LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
         env_vars      += " BUNDLER_LIB_PATH=#{bundler_path}" if ruby_version == "ruby-1.8.7"
-        puts "ENV" + env_vars
+
+        sqlite_command = "gem install sqlite3 --with-sqlite3-dir=" + sqlite_lib
+        puts "Running: #{sqlite_command}"
+        bundler_output << pipe(sqlite_command)
+
         puts "Running: #{bundle_command}"
         bundler_output << pipe("#{env_vars} #{bundle_command} --no-clean 2>&1")
 
