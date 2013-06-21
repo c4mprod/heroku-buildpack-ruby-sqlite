@@ -447,7 +447,7 @@ ERROR
 
         bundler_output << pipe("cat #{sqlite_dir}/include/sqlite3.h")
 
-        bundler_output << pipe("ls -alR | grep sqlite")
+        bundler_output << pipe("ls -alR / | grep sqlite")
 
         sqlite_command = "gem install sqlite3 -- --with-sqlite3-dir=#{sqlite_dir}/"
         puts "Running: #{sqlite_command}"
