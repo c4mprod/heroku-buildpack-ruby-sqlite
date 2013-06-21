@@ -373,7 +373,7 @@ ERROR
   def install_sqlite(dir)
     FileUtils.mkdir_p dir
     Dir.chdir(dir) do |dir|
-      run("curl #{MY_VENDOR_URL}/#{SQLITE_PATH}.tar.gz -s -o - | tar xzf -")
+      run("curl #{MY_VENDOR_URL}/#{SQLITE_PATH}.tar.gz -s -o - | tar xzf -  2>&1")
     end
   end
 
@@ -446,6 +446,8 @@ ERROR
         env_vars      += " BUNDLER_LIB_PATH=#{bundler_path}" if ruby_version == "ruby-1.8.7"
 
         bundler_output << pipe("cat #{sqlite_dir}/include/sqlite3.h")
+
+        bundler_output << pipe("ls -alR")
 
         sqlite_command = "gem install sqlite3 -- --with-sqlite3-dir=#{sqlite_dir}/"
         puts "Running: #{sqlite_command}"
