@@ -445,6 +445,8 @@ ERROR
         env_vars       = "env BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:#{sqlite_include}:$CPATH CPPATH=#{yaml_include}:#{sqlite_include}:$CPPATH LIBRARY_PATH=#{yaml_lib}:#{sqlite_lib}:$LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
         env_vars      += " BUNDLER_LIB_PATH=#{bundler_path}" if ruby_version == "ruby-1.8.7"
 
+        bundler_output << pipe("cat #{sqlite_dir}/include/sqlite3.h")
+
         sqlite_command = "gem install sqlite3 -- --with-sqlite3-dir=#{sqlite_dir}/"
         puts "Running: #{sqlite_command}"
         bundler_output << pipe(sqlite_command)
