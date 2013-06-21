@@ -443,6 +443,7 @@ ERROR
         
         env_vars       = "env BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:#{sqlite_include}:$CPATH CPPATH=#{yaml_include}:#{sqlite_include}:$CPPATH LIBRARY_PATH=#{yaml_lib}:#{sqlite_lib}:$LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
         env_vars      += " BUNDLER_LIB_PATH=#{bundler_path}" if ruby_version == "ruby-1.8.7"
+        puts "ENV" + env_vars
         puts "Running: #{bundle_command}"
         bundler_output << pipe("#{env_vars} #{bundle_command} --no-clean 2>&1")
 
@@ -467,14 +468,14 @@ ERROR
       else
         log "bundle", :status => "failure"
         error_message = "Failed to install gems via Bundler."
-        if bundler_output.match(/Installing sqlite3 \([\w.]+\) with native extensions\s+Gem::Installer::ExtensionBuildError: ERROR: Failed to build gem native extension./)
-          error_message += <<ERROR
-
-
-Detected sqlite3 gem which is not supported on Heroku.
-http://devcenter.heroku.com/articles/how-do-i-use-sqlite3-for-development
-ERROR
-        end
+#        if bundler_output.match(/Installing sqlite3 \([\w.]+\) with native extensions\s+Gem::Installer::ExtensionBuildError: ERROR: Failed to build gem native extension./)
+#          error_message += <<ERROR
+#
+#
+#Detected sqlite3 gem which is not supported on Heroku.
+#http://devcenter.heroku.com/articles/how-do-i-use-sqlite3-for-development
+#ERROR
+#        end
 
         error error_message
       end
