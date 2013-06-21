@@ -373,7 +373,7 @@ ERROR
   def install_sqlite(dir)
     FileUtils.mkdir_p dir
     Dir.chdir(dir) do |dir|
-      run("curl #{MY_VENDOR_URL}/#{SQLITE_PATH}.tgz -s -o - | tar xzf -")
+      run("curl #{MY_VENDOR_URL}/#{SQLITE_PATH}.tar.gz -s -o - | tar xzf -")
     end
   end
 
