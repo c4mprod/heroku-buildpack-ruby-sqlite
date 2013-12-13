@@ -9,19 +9,19 @@ class LanguagePack::Ruby < LanguagePack::Base
   include LanguagePack::BundlerLockfile
   extend LanguagePack::BundlerLockfile
 
-  BUILDPACK_VERSION   = "v61"
-  LIBYAML_VERSION     = "0.1.4"
-  LIBYAML_PATH        = "libyaml-#{LIBYAML_VERSION}"
-  BUNDLER_VERSION     = "1.3.2"
-  BUNDLER_GEM_PATH    = "bundler-#{BUNDLER_VERSION}"
-  NODE_VERSION        = "0.4.7"
+  BUILDPACK_VERSION = "v61"
+  LIBYAML_VERSION = "0.1.4"
+  LIBYAML_PATH = "libyaml-#{LIBYAML_VERSION}"
+  BUNDLER_VERSION = "1.3.2"
+  BUNDLER_GEM_PATH = "bundler-#{BUNDLER_VERSION}"
+  NODE_VERSION = "0.4.7"
   NODE_JS_BINARY_PATH = "node-#{NODE_VERSION}"
-  JVM_BASE_URL        = "http://heroku-jdk.s3.amazonaws.com"
-  JVM_VERSION         = "openjdk7-latest"
-  SQLITE_VERSION      = "3071700"
-  SQLITE_PATH         = "sqlite-autoconf-#{SQLITE_VERSION}"
-  
-  MY_VENDOR_URL       = "https://s3-eu-west-1.amazonaws.com/prod-audi-leasing-us"
+  JVM_BASE_URL = "http://heroku-jdk.s3.amazonaws.com"
+  JVM_VERSION = "openjdk7-latest"
+  SQLITE_VERSION = "3071700"
+  SQLITE_PATH = "sqlite-autoconf-#{SQLITE_VERSION}"
+
+  MY_VENDOR_URL = "https://s3-eu-west-1.amazonaws.com/prod-audi-leasing-us"
 
   # detects if this is a valid Ruby app
   # @return [Boolean] true if it's a Ruby app
@@ -38,7 +38,7 @@ class LanguagePack::Ruby < LanguagePack::Base
     gem_version = nil
     bootstrap_bundler do |bundler_path|
       $: << "#{bundler_path}/gems/bundler-#{LanguagePack::Ruby::BUNDLER_VERSION}/lib"
-      gem         = lockfile_parser.specs.detect {|gem| gem.name == name }
+      gem = lockfile_parser.specs.detect { |gem| gem.name == name }
       gem_version = gem.version if gem
     end
 
@@ -55,22 +55,22 @@ class LanguagePack::Ruby < LanguagePack::Base
 
   def default_config_vars
     vars = {
-      "LANG"     => "en_US.UTF-8",
-      "PATH"     => default_path,
-      "GEM_PATH" => slug_vendor_base,
+        "LANG" => "en_US.UTF-8",
+        "PATH" => default_path,
+        "GEM_PATH" => slug_vendor_base,
     }
 
     ruby_version_jruby? ? vars.merge({
-      "JAVA_OPTS" => default_java_opts,
-      "JRUBY_OPTS" => default_jruby_opts,
-      "JAVA_TOOL_OPTIONS" => default_java_tool_options
-    }) : vars
+                                         "JAVA_OPTS" => default_java_opts,
+                                         "JRUBY_OPTS" => default_jruby_opts,
+                                         "JAVA_TOOL_OPTIONS" => default_java_tool_options
+                                     }) : vars
   end
 
   def default_process_types
     {
-      "rake"    => "bundle exec rake",
-      "console" => "bundle exec irb"
+        "rake" => "bundle exec rake",
+        "console" => "bundle exec irb"
     }
   end
 
@@ -90,7 +90,7 @@ class LanguagePack::Ruby < LanguagePack::Base
     end
   end
 
-private
+  private
 
   # the base PATH environment variable to be used
   # @return [String] the resulting PATH
@@ -209,14 +209,14 @@ private
       ENV[key] ||= value
     end
     ENV["GEM_HOME"] = slug_vendor_base
-    ENV["PATH"]     = "#{ruby_install_binstub_path}:#{config_vars["PATH"]}"
+    ENV["PATH"] = "#{ruby_install_binstub_path}:#{config_vars["PATH"]}"
   end
 
   # sets up the profile.d script for this buildpack
   def setup_profiled
     set_env_override "GEM_PATH", "$HOME/#{slug_vendor_base}:$GEM_PATH"
-    set_env_default  "LANG",     "en_US.UTF-8"
-    set_env_override "PATH",     "$HOME/bin:$HOME/#{slug_vendor_base}/bin:$PATH"
+    set_env_default "LANG", "en_US.UTF-8"
+    set_env_override "PATH", "$HOME/bin:$HOME/#{slug_vendor_base}/bin:$PATH"
 
     if ruby_version_jruby?
       set_env_default "JAVA_OPTS", default_java_opts
@@ -266,8 +266,8 @@ ERROR
       topic "Using Ruby version: #{ruby_version}"
     else
       topic "Using RUBY_VERSION: #{ruby_version}"
-      puts  "WARNING: RUBY_VERSION support has been deprecated and will be removed entirely on August 1, 2012."
-      puts  "See https://devcenter.heroku.com/articles/ruby-versions#selecting_a_version_of_ruby for more information."
+      puts "WARNING: RUBY_VERSION support has been deprecated and will be removed entirely on August 1, 2012."
+      puts "See https://devcenter.heroku.com/articles/ruby-versions#selecting_a_version_of_ruby for more information."
     end
 
     true
@@ -295,13 +295,13 @@ ERROR
   # @return [String] resulting path or empty string if ruby is not vendored
   def ruby_install_binstub_path
     @ruby_install_binstub_path ||=
-      if build_ruby?
-        "#{build_ruby_path}/bin"
-      elsif ruby_version
-        "#{slug_vendor_ruby}/bin"
-      else
-        ""
-      end
+        if build_ruby?
+          "#{build_ruby_path}/bin"
+        elsif ruby_version
+          "#{slug_vendor_ruby}/bin"
+        else
+          ""
+        end
   end
 
   # setup the environment so we can use the vendored ruby
@@ -309,7 +309,7 @@ ERROR
     ENV["PATH"] = "#{ruby_install_binstub_path}:#{ENV["PATH"]}"
 
     if ruby_version_jruby?
-      ENV['JAVA_OPTS']  = default_java_opts
+      ENV['JAVA_OPTS'] = default_java_opts
     end
   end
 
@@ -326,7 +326,7 @@ ERROR
       gems.each do |gem|
         run("curl #{VENDOR_URL}/#{gem}.tgz -s -o - | tar xzf -")
       end
-      Dir["bin/*"].each {|path| run("chmod 755 #{path}") }
+      Dir["bin/*"].each { |path| run("chmod 755 #{path}") }
     end
   end
 
@@ -338,8 +338,8 @@ ERROR
 
   # vendors binaries into the slug
   def install_binaries
-    binaries.each {|binary| install_binary(binary) }
-    Dir["bin/*"].each {|path| run("chmod +x #{path}") }
+    binaries.each { |binary| install_binary(binary) }
+    Dir["bin/*"].each { |path| run("chmod +x #{path}") }
   end
 
   # vendors individual binary into the slug
@@ -373,6 +373,7 @@ ERROR
   def install_sqlite(dir)
     FileUtils.mkdir_p dir
     Dir.chdir(dir) do |dir|
+      puts "curl #{MY_VENDOR_URL}/#{SQLITE_PATH}.tar.gz -s -o - | tar xzf -  2>&1"
       run("curl #{MY_VENDOR_URL}/#{SQLITE_PATH}.tar.gz -s -o - | tar xzf -  2>&1")
     end
   end
@@ -384,9 +385,9 @@ ERROR
   def remove_vendor_bundle
     if File.exists?("vendor/bundle")
       topic "WARNING:  Removing `vendor/bundle`."
-      puts  "Checking in `vendor/bundle` is not supported. Please remove this directory"
-      puts  "and add it to your .gitignore. To vendor your gems with Bundler, use"
-      puts  "`bundle pack` instead."
+      puts "Checking in `vendor/bundle` is not supported. Please remove this directory"
+      puts "and add it to your .gitignore. To vendor your gems with Bundler, use"
+      puts "`bundle pack` instead."
       FileUtils.rm_rf("vendor/bundle")
     end
   end
@@ -425,25 +426,37 @@ ERROR
         sqlite_dir = "#{tmpdir}/#{SQLITE_PATH}"
         puts "Installing libyaml to #{libyaml_dir}"
         install_libyaml(libyaml_dir)
-        
+
         puts "Installing SQLite to #{sqlite_dir}"
         install_sqlite(sqlite_dir)
-        
-        # need to setup compile environment for the psych gem
-        yaml_include   = File.expand_path("#{libyaml_dir}/include")
-        yaml_lib       = File.expand_path("#{libyaml_dir}/lib")
-        
-        sqlite_include   = File.expand_path("#{sqlite_dir}/include")
-        sqlite_lib       = File.expand_path("#{sqlite_dir}/lib")
 
-        
-        pwd            = run("pwd").chomp
-        bundler_path   = "#{pwd}/#{slug_vendor_base}/gems/#{BUNDLER_GEM_PATH}/lib"
+        if File.exist? "#{sqlite_dir}/#{SQLITE_PATH}/"
+          puts "folder exists"
+        else
+          puts "folder missing"
+        end
+
+        if File.exist? "#{sqlite_dir}/#{SQLITE_PATH}/sqlite3.h"
+          puts "sqlite3.h exists"
+        else
+          puts "sqlite3.h missing"
+        end
+
+        # need to setup compile environment for the psych gem
+        yaml_include = File.expand_path("#{libyaml_dir}/include")
+        yaml_lib = File.expand_path("#{libyaml_dir}/lib")
+
+        sqlite_include = File.expand_path("#{sqlite_dir}/include")
+        sqlite_lib = File.expand_path("#{sqlite_dir}/lib")
+
+
+        pwd = run("pwd").chomp
+        bundler_path = "#{pwd}/#{slug_vendor_base}/gems/#{BUNDLER_GEM_PATH}/lib"
         # we need to set BUNDLE_CONFIG and BUNDLE_GEMFILE for
         # codon since it uses bundler.
-        
-        env_vars       = "env BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:#{sqlite_include}:$CPATH CPPATH=#{yaml_include}:#{sqlite_include}:$CPPATH LIBRARY_PATH=#{yaml_lib}:#{sqlite_lib}:$LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
-        env_vars      += " BUNDLER_LIB_PATH=#{bundler_path}" if ruby_version == "ruby-1.8.7"
+
+        env_vars = "env BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:#{sqlite_include}:$CPATH CPPATH=#{yaml_include}:#{sqlite_include}:$CPPATH LIBRARY_PATH=#{yaml_lib}:#{sqlite_lib}:$LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
+        env_vars += " BUNDLER_LIB_PATH=#{bundler_path}" if ruby_version == "ruby-1.8.7"
 
         sqlite_command = "gem install sqlite3 -- --with-sqlite3-dir=#{sqlite_dir}/#{SQLITE_PATH}/"
         puts "Running: #{sqlite_command}"
@@ -490,7 +503,7 @@ ERROR
   # @return [String] require string if needed or else an empty string
   def syck_hack
     syck_hack_file = File.expand_path(File.join(File.dirname(__FILE__), "../../vendor/syck_hack"))
-    ruby_version   = run_stdout('ruby -e "puts RUBY_VERSION"').chomp
+    ruby_version = run_stdout('ruby -e "puts RUBY_VERSION"').chomp
     # < 1.9.3 includes syck, so we need to use the syck hack
     if Gem::Version.new(ruby_version) < Gem::Version.new("1.9.3")
       "-r#{syck_hack_file}"
@@ -642,14 +655,14 @@ params = CGI.parse(uri.query || "")
   def load_bundler_cache
     cache_load "vendor"
 
-    full_ruby_version       = run_stdout(%q(ruby -v)).chomp
-    rubygems_version        = run_stdout(%q(gem -v)).chomp
-    heroku_metadata         = "vendor/heroku"
-    old_rubygems_version    = nil
-    ruby_version_cache      = "#{heroku_metadata}/ruby_version"
+    full_ruby_version = run_stdout(%q(ruby -v)).chomp
+    rubygems_version = run_stdout(%q(gem -v)).chomp
+    heroku_metadata = "vendor/heroku"
+    old_rubygems_version = nil
+    ruby_version_cache = "#{heroku_metadata}/ruby_version"
     buildpack_version_cache = "#{heroku_metadata}/buildpack_version"
-    bundler_version_cache   = "#{heroku_metadata}/bundler_version"
-    rubygems_version_cache  = "#{heroku_metadata}/rubygems_version"
+    bundler_version_cache = "#{heroku_metadata}/bundler_version"
+    rubygems_version_cache = "#{heroku_metadata}/rubygems_version"
 
     old_rubygems_version = File.read(rubygems_version_cache).chomp if File.exists?(rubygems_version_cache)
 
@@ -659,7 +672,7 @@ params = CGI.parse(uri.query || "")
       cache_clear("vendor")
       FileUtils.rm_rf("vendor/ruby_version")
       purge_bundler_cache
-    # fix bug introduced in v38
+      # fix bug introduced in v38
     elsif !File.exists?(buildpack_version_cache) && File.exists?(ruby_version_cache)
       puts "Broken cache detected. Purging build cache."
       purge_bundler_cache
@@ -678,7 +691,7 @@ params = CGI.parse(uri.query || "")
 
     # fix for https://github.com/heroku/heroku-buildpack-ruby/issues/86
     if (!File.exists?(rubygems_version_cache) ||
-          (old_rubygems_version == "2.0.0" && old_rubygems_version != rubygems_version)) &&
+        (old_rubygems_version == "2.0.0" && old_rubygems_version != rubygems_version)) &&
         File.exists?(ruby_version_cache) && File.read(ruby_version_cache).chomp.include?("ruby 2.0.0p0")
       puts "Updating to rubygems #{rubygems_version}. Clearing bundler cache."
       purge_bundler_cache
