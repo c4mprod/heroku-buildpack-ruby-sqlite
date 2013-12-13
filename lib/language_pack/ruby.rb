@@ -21,7 +21,7 @@ class LanguagePack::Ruby < LanguagePack::Base
   SQLITE_VERSION      = "3071700"
   SQLITE_PATH         = "sqlite-autoconf-#{SQLITE_VERSION}"
   
-  MY_VENDOR_URL       = "https://s3-eu-west-1.amazonaws.com/staging-audi-leasing"
+  MY_VENDOR_URL       = "https://s3-eu-west-1.amazonaws.com/prod-audi-leasing-us"
 
   # detects if this is a valid Ruby app
   # @return [Boolean] true if it's a Ruby app
